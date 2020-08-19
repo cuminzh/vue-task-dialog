@@ -4,7 +4,7 @@
   "private": false,
   "main": "lib/task-dialog.umd.min.js",
   "entry": "src/views/table-task-dialog/index.js",
-  "author": "zhanghuimin",
+  "author": "zhanghuimin <1510579962@qq.com>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
