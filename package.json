@@ -1,6 +1,6 @@
 {
   "name": "vue-table-dialog",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": false,
   "main": "lib/vue-task-dialog.umd.min.js",
   "entry": "src/views/table-task-dialog/index.js",
