@@ -132,8 +132,8 @@
   import {PRJ_SCHEDULE_TYPES, PRJ_ACTIVITY_TYPES, PRJ_STATUS} from "../../model/model-type";
   import {Tools} from "../../utils/tools";
   import dayjs from "dayjs";
-  import "../../less/main.less";
-  import "../../less/common.less";
+  import "@/less/d-main.less";
+  import "@/less/d-common.less";
   import ScrollMix from "@/mixins/scroll-mix"
 
   export default {
