@@ -1,8 +1,5 @@
 <template>
-  <v-dialog
-      v-model="show"
-      max-width="940"
-      persistent>
+  <div>
     <div class="contain-header">
       <v-container fluid class="pl-5 pr-5 pt-5 pb-0">
         <v-row no-gutters>
@@ -125,7 +122,7 @@
         </v-row>
       </v-container>
     </div>
-  </v-dialog>
+  </div>
 </template>
 
 <script>
