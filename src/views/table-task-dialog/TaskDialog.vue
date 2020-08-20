@@ -135,7 +135,7 @@
 
   export default {
     name: "TaskDialog",
-    props: ["search", "callback", "close", "total", "show", "list"],
+    props: ["search", "callback", "close", "total", "show", "list", "load"],
     mixins: [ScrollMix],
     data() {
       return {
