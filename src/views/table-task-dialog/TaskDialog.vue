@@ -1,6 +1,9 @@
 <template>
-  <div>
-    <div slot="header">
+  <v-dialog
+      v-model="show"
+      max-width="940"
+      persistent>
+    <div class="contain-header">
       <v-container fluid class="pl-5 pr-5 pt-5 pb-0">
         <v-row no-gutters>
           <v-col>选择项目</v-col>
@@ -9,17 +12,17 @@
           <v-spacer/>
           <v-col cols="10">
             <div class="filter">
-<!--              <div class="filter-item" v-if="userType==1">-->
-<!--                <v-select-->
-<!--                    v-model="params.firstBrandId"-->
-<!--                    :items="brands"-->
-<!--                    item-text="name"-->
-<!--                    item-value="id"-->
-<!--                    class="input-select"-->
-<!--                    placeholder="请选择品牌"-->
-<!--                    hide-details>-->
-<!--                </v-select>-->
-<!--              </div>-->
+              <!--              <div class="filter-item" v-if="userType==1">-->
+              <!--                <v-select-->
+              <!--                    v-model="params.firstBrandId"-->
+              <!--                    :items="brands"-->
+              <!--                    item-text="name"-->
+              <!--                    item-value="id"-->
+              <!--                    class="input-select"-->
+              <!--                    placeholder="请选择品牌"-->
+              <!--                    hide-details>-->
+              <!--                </v-select>-->
+              <!--              </div>-->
               <div class="filter-item">
                 <v-select
                     v-model="params.scheduleType"
@@ -62,52 +65,53 @@
         </v-row>
       </v-container>
     </div>
-    <v-data-table
-        class="fixed-dialog-footer"
-        :headers="headers"
-        :items="list"
-        item-key="id"
-        fixed-header
-        :options.sync="pagination"
-        :no-data-text="dataText"
-        :server-items-length="total"
-        show-select
-        single-select
-        v-model="selectProject"
-        hide-default-footer
-    >
-      <template v-slot:item.projectOrder="{item}">
-        {{item.projectOrder}}
-        <br/>
-        {{item.creationDate | format("YYYY-MM-DD HH:mm")}}
-      </template>
-      <template v-slot:item.projectNum="{ item }">
-        {{item.projectNum}}
-        <br/>
-        {{item.projectName}}
-      </template>
+    <div class="contain-body">
+      <v-data-table
+          :headers="headers"
+          :items="list"
+          item-key="id"
+          fixed-header
+          :options.sync="pagination"
+          :no-data-text="dataText"
+          :server-items-length="total"
+          show-select
+          single-select
+          v-model="selectProject"
+          hide-default-footer
+      >
+        <template v-slot:item.projectOrder="{item}">
+          {{item.projectOrder}}
+          <br/>
+          {{dayjs(item.creationDate).format("YYYY-MM-DD HH:mm")}}
+        </template>
+        <template v-slot:item.projectNum="{ item }">
+          {{item.projectNum}}
+          <br/>
+          {{item.projectName}}
+        </template>
 
-      <template v-slot:item.activityBrand="{ item }">
-        {{item.customerName}}
-        <br/>
-        {{item.activityBrand}}
-      </template>
-      <template v-slot:item.activityType="{ item }">
-        {{scheduleTypeObj[item.scheduleType]?scheduleTypeObj[item.scheduleType].name:'未知'}}
-        <br/>
-        {{activityTypeObj[item.activityType]?activityTypeObj[item.activityType].name:'未知'}}
-      </template>
-      <template v-slot:item.startTime="{ item }">
-        起：{{dayjs(item.startTime).format("YYYY-MM-DD")}}
-        <br/>
-        止：{{dayjs(item.endTime).format("YYYY-MM-DD")}}
-      </template>
-      <template
-          v-slot:item.status="{ item }"
-      >{{statusObj[item.status]?statusObj[item.status].name:'未知'}}
-      </template>
-    </v-data-table>
-    <div slot="footer" class="text-right">
+        <template v-slot:item.activityBrand="{ item }">
+          {{item.customerName}}
+          <br/>
+          {{item.activityBrand}}
+        </template>
+        <template v-slot:item.activityType="{ item }">
+          {{scheduleTypeObj[item.scheduleType]?scheduleTypeObj[item.scheduleType].name:'未知'}}
+          <br/>
+          {{activityTypeObj[item.activityType]?activityTypeObj[item.activityType].name:'未知'}}
+        </template>
+        <template v-slot:item.startTime="{ item }">
+          起：{{dayjs(item.startTime).format("YYYY-MM-DD")}}
+          <br/>
+          止：{{dayjs(item.endTime).format("YYYY-MM-DD")}}
+        </template>
+        <template
+            v-slot:item.status="{ item }"
+        >{{statusObj[item.status]?statusObj[item.status].name:'未知'}}
+        </template>
+      </v-data-table>
+    </div>
+    <div class="text-right">
       <v-container fill-height>
         <v-row no-gutters align="center" justify="center">
           <v-col class="text-center">
@@ -121,19 +125,23 @@
         </v-row>
       </v-container>
     </div>
-  </div>
+  </v-dialog>
 </template>
 
 <script>
   import {PRJ_SCHEDULE_TYPES, PRJ_ACTIVITY_TYPES, PRJ_STATUS} from "../../model/model-type";
   import {Tools} from "../../utils/tools";
-  import dayjs from "dayjs"
+  import dayjs from "dayjs";
+  import "../../less/main.less";
+  import "../../less/common.less";
+  import ScrollMix from "@/mixins/scroll-mix"
 
   export default {
     name: "TaskDialog",
-    props: ["search", "callback", "close", "list", "total", "pagination"],
-    data(){
-      return{
+    props: ["search", "callback", "close", "total", "show", "list"],
+    mixins: [ScrollMix],
+    data() {
+      return {
         scheduleTypes: PRJ_SCHEDULE_TYPES,
         activityTypes: PRJ_ACTIVITY_TYPES,
         statusObj: null,
@@ -181,6 +189,9 @@
         ],
         selectProject: [],
         dayjs: dayjs,
+        pagination: {
+          itemsPerPage: 15,
+        },
         params: {
           firstBrandId: "",
           scheduleType: "",
@@ -188,13 +199,17 @@
           projectName: "",
           status: ""
         },
-        dataText: '当前暂无数据'
+        dataText: '当前暂无数据',
       }
     },
     mounted() {
       this.scheduleTypeObj = Tools.arrToObj(this.scheduleTypes, "val");
       this.activityTypeObj = Tools.arrToObj(this.activityTypes, "val");
       this.statusObj = Tools.arrToObj(this.status, "val");
+      document.addEventListener('scroll', this.scrollLoad, true)
+    },
+    destroyed() {
+      document.removeEventListener('scroll', this.scrollLoad, true)
     },
     methods: {
       searchList() {
@@ -204,6 +219,5 @@
   }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
 </style>

@@ -10,7 +10,7 @@ export default {
   methods: {
     scrollLoad: Tools._throttle(function () {
       {
-        let scrollbar1 = document.getElementsByClassName('container-full__body')
+        let scrollbar1 = document.getElementsByClassName('contain-body')
         let scrollbar = [...scrollbar1].pop()
         if (this.onFetching) {
           // do nothing

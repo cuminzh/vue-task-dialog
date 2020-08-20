@@ -1,6 +1,7 @@
 <template>
   <v-app>
-    <task-dialog/>
+    <v-btn @click="showDialog">显示Dialog</v-btn>
+    <task-dialog :show="show"/>
   </v-app>
 </template>
 
@@ -10,7 +11,13 @@ export default {
   name: 'App',
   components:{TaskDialog},
   data: () => ({
+    show: false
     //
   }),
+  methods:{
+    showDialog(){
+      this.show = true
+    }
+  }
 };
 </script>
