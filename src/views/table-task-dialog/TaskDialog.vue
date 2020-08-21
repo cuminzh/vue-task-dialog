@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="table-dialog">
     <div class="contain-header">
       <v-container fluid class="pl-5 pr-5 pt-5 pb-0">
         <v-row no-gutters>
